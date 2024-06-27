@@ -13,7 +13,7 @@ class Main:
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
-        pygame.display.set_caption('Tetris by Willian')
+        pygame.display.set_caption('Tetris')
 
         # components
         self.game = Game()
@@ -28,7 +28,7 @@ class Main:
                     exit()
 
             # display
-            self.display_surface.fill(PURPLE)
+            self.display_surface.fill(GRAY)
             self.game.run()
             self.score.run()
             self.preview.run()
