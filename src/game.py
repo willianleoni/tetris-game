@@ -227,7 +227,7 @@ class Tetromino:
 					return
 
 				# vertical / floor check
-				if pos.y > ROWS:
+				if pos.y > ROWS - 2:
 					return
 
 			# 4. implement new positions
