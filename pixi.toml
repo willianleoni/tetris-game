@@ -1,0 +1,12 @@
+[workspace]
+channels = ["conda-forge"]
+name = "tetris-game"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+start = "python src/main.py"
+
+[dependencies]
+python = "3.11.*"
+pygame = ">=2.6.1,<3"
