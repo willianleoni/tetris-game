@@ -13,7 +13,7 @@ class Score:
         self.display_surface = pygame.display.get_surface()
 
         # font
-        self.font = pygame.font.Font(join("..", "graphics", "Russo_One.ttf"), 30)
+        self.font = pygame.font.Font(join(GRAPHICS_PATH, 'Russo_One.ttf'), 40)
 
         # increment
         self.increment_height = self.surface.get_height() / 3

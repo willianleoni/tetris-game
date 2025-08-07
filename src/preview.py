@@ -1,6 +1,5 @@
 from settings import *
 from pygame.image import load
-from os import path
 
 
 class Preview:
@@ -15,7 +14,7 @@ class Preview:
 
         # shapes
         self.shape_surfaces = {
-            shape: load(path.join("..", "graphics", f"{shape}.png")).convert_alpha()
+            shape: load(join(GRAPHICS_PATH, f"{shape}.png")).convert_alpha()
             for shape in TETROMINOS.keys()
         }
 

@@ -51,7 +51,7 @@ class Game:
         self.current_lines = 0
 
         # sound
-        self.landing_sound = pygame.mixer.Sound(join("..", "sound", "landing.wav"))
+        self.landing_sound = pygame.mixer.Sound(join(SOUND_PATH, 'landing.wav'))
         self.landing_sound.set_volume(0.1)
 
     def calculate_score(self, num_lines):
@@ -62,7 +62,7 @@ class Game:
             self.current_level += 1
             self.down_speed *= 0.75
             self.down_speed_faster = self.down_speed * 0.3
-            self.timers["vertical move"].duration = self.down_speed
+            self.timers["vertical move"].duration = int(self.down_speed)
 
         self.update_score(self.current_lines, self.current_score, self.current_level)
 
@@ -126,11 +126,11 @@ class Game:
         # down speedup
         if not self.down_pressed and keys[pygame.K_DOWN]:
             self.down_pressed = True
-            self.timers["vertical move"].duration = self.down_speed_faster
+            self.timers["vertical move"].duration = int(self.down_speed_faster)
 
         if self.down_pressed and not keys[pygame.K_DOWN]:
             self.down_pressed = False
-            self.timers["vertical move"].duration = self.down_speed
+            self.timers["vertical move"].duration = int(self.down_speed)
 
     def check_finished_rows(self):
 

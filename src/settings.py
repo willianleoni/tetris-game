@@ -1,4 +1,10 @@
 import pygame
+from os.path import join
+from pathlib import Path
+
+BASE_PATH = Path(__file__).resolve().parent.parent
+GRAPHICS_PATH = join(BASE_PATH, 'graphics')
+SOUND_PATH = join(BASE_PATH, 'sound')
 
 # Game size
 COLUMNS = 10
