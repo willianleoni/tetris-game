@@ -1,6 +1,5 @@
 from settings import *
 from sys import exit
-from os.path import join
 
 # components
 from game import Game
@@ -28,7 +27,7 @@ class Main:
         self.preview = Preview()
 
         # audio
-        self.music = pygame.mixer.Sound(join("..", "sound", "music.wav"))
+        self.music = pygame.mixer.Sound(SOUND_DIR / "music.wav")
         self.music.set_volume(0.07)
         self.music.play(-1)
 
