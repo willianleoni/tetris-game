@@ -1,4 +1,10 @@
 import pygame
+from pathlib import Path
+
+# Asset paths, relative to this file so the game runs from any working directory
+BASE_DIR = Path(__file__).resolve().parent.parent
+GRAPHICS_DIR = BASE_DIR / "graphics"
+SOUND_DIR = BASE_DIR / "sound"
 
 # Game size
 COLUMNS = 10
