@@ -1,12 +1,20 @@
 [workspace]
 channels = ["conda-forge"]
 name = "tetris-game"
-platforms = ["linux-64"]
+platforms = ["linux-64", "win-64"]
 version = "0.1.0"
 
 [tasks]
 start = "python src/main.py"
+test = "pytest -q tests"
+# controle por mão com o DroidCam (celular em pé): ajuste --camera/--rotate se precisar
+maos = "python src/main.py --camera 1 --rotate 90"
 
 [dependencies]
 python = "3.11.*"
 pygame = ">=2.6.1,<3"
+pytest = ">=9.2.0,<10"
+
+[pypi-dependencies]
+opencv-python = ">=5.1.0.95, <6"
+mediapipe = ">=1.2.3, <2"
