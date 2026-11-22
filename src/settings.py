@@ -22,6 +22,11 @@ PADDING = 20
 WINDOW_WIDTH = GAME_WIDTH + SIDEBAR_WIDTH + PADDING * 3
 WINDOW_HEIGHT = GAME_HEIGHT + PADDING * 2
 
+# camera panel, shown to the right of the sidebar when hand control is on
+CAMERA_PANEL_WIDTH = 300
+MODEL_DIR = BASE_DIR / "models"
+TARGET_COLUMN_COLOR = (255, 255, 255, 35)
+
 # game behaviour
 UPDATE_START_SPEED = 500
 MOVE_WAIT_TIME = 200

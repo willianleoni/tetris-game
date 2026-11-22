@@ -26,11 +26,15 @@ class FakeInput:
 
 
 @pytest.fixture
-def game():
+def game(monkeypatch):
     pygame.init()
     pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    import game as game_module
     from game import Game
 
+    # Game draws its first piece with random.choice; pin it to T so the
+    # wall positions and the rotation below are deterministic
+    monkeypatch.setattr(game_module, "choice", lambda seq: "T")
     fake = FakeInput()
     g = Game(lambda: "T", lambda *args: None, inputs=[fake])
     g.fake = fake

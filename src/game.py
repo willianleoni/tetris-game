@@ -11,6 +11,7 @@ class Game:
 
         # input sources (keyboard by default; hand tracking plugs in here)
         self.inputs = inputs if inputs is not None else [KeyboardInput()]
+        self.commands = Commands()
 
         # general
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -124,8 +125,17 @@ class Game:
             return (delta > 0) - (delta < 0)
         return 0
 
+    def draw_target_column(self):
+        column = self.commands.target_column
+        if column is None:
+            return
+        highlight = pygame.Surface((CELL_SIZE, GAME_HEIGHT), pygame.SRCALPHA)
+        highlight.fill(TARGET_COLUMN_COLOR)
+        self.surface.blit(highlight, (column * CELL_SIZE, 0))
+
     def input(self):
         commands = self.read_commands()
+        self.commands = commands
 
         # checking horizontal movement
         if not self.timers["horizontal move"].active:
@@ -187,6 +197,7 @@ class Game:
 
         # drawing
         self.surface.fill(GRAY)
+        self.draw_target_column()
         self.sprites.draw(self.surface)
 
         self.draw_grid()
