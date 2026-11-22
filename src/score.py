@@ -1,5 +1,4 @@
 from settings import *
-from os.path import join
 
 
 class Score:
@@ -13,7 +12,7 @@ class Score:
         self.display_surface = pygame.display.get_surface()
 
         # font
-        self.font = pygame.font.Font(join("..", "graphics", "Russo_One.ttf"), 30)
+        self.font = pygame.font.Font(GRAPHICS_DIR / "Russo_One.ttf", 30)
 
         # increment
         self.increment_height = self.surface.get_height() / 3

@@ -1,13 +1,17 @@
 from settings import *
 from random import choice
 from sys import exit
-from os.path import join
 
 from timer import Timer
+from controls import Commands, KeyboardInput
 
 
 class Game:
-    def __init__(self, get_next_shape, update_score):
+    def __init__(self, get_next_shape, update_score, inputs=None):
+
+        # input sources (keyboard by default; hand tracking plugs in here)
+        self.inputs = inputs if inputs is not None else [KeyboardInput()]
+        self.commands = Commands()
 
         # general
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -51,7 +55,7 @@ class Game:
         self.current_lines = 0
 
         # sound
-        self.landing_sound = pygame.mixer.Sound(join("..", "sound", "landing.wav"))
+        self.landing_sound = pygame.mixer.Sound(SOUND_DIR / "landing.wav")
         self.landing_sound.set_volume(0.1)
 
     def calculate_score(self, num_lines):
@@ -105,30 +109,53 @@ class Game:
 
         self.surface.blit(self.line_surface, (0, 0))
 
+    def read_commands(self):
+        commands = Commands()
+        for source in self.inputs:
+            commands = commands.merge(source.read())
+        return commands
+
+    def horizontal_direction(self, commands):
+        if commands.left or commands.right:
+            return commands.right - commands.left
+        if commands.target_column is not None:
+            # the first block is the rotation pivot, so it tracks the target
+            current_column = int(self.tetromino.blocks[0].pos.x)
+            delta = commands.target_column - current_column
+            return (delta > 0) - (delta < 0)
+        return 0
+
+    def draw_target_column(self):
+        column = self.commands.target_column
+        if column is None:
+            return
+        highlight = pygame.Surface((CELL_SIZE, GAME_HEIGHT), pygame.SRCALPHA)
+        highlight.fill(TARGET_COLUMN_COLOR)
+        self.surface.blit(highlight, (column * CELL_SIZE, 0))
+
     def input(self):
-        keys = pygame.key.get_pressed()
+        commands = self.read_commands()
+        self.commands = commands
 
         # checking horizontal movement
         if not self.timers["horizontal move"].active:
-            if keys[pygame.K_LEFT]:
-                self.tetromino.move_horizontal(-1)
-                self.timers["horizontal move"].activate()
-            if keys[pygame.K_RIGHT]:
-                self.tetromino.move_horizontal(1)
+            direction = self.horizontal_direction(commands)
+            if direction:
+                self.tetromino.move_horizontal(direction)
                 self.timers["horizontal move"].activate()
 
         # check for rotation
         if not self.timers["rotate"].active:
-            if keys[pygame.K_UP]:
+            if commands.rotate:
                 self.tetromino.rotate()
                 self.timers["rotate"].activate()
 
         # down speedup
-        if not self.down_pressed and keys[pygame.K_DOWN]:
+        if not self.down_pressed and commands.soft_drop:
             self.down_pressed = True
             self.timers["vertical move"].duration = self.down_speed_faster
 
-        if self.down_pressed and not keys[pygame.K_DOWN]:
+        if self.down_pressed and not commands.soft_drop:
             self.down_pressed = False
             self.timers["vertical move"].duration = self.down_speed
 
@@ -170,6 +197,7 @@ class Game:
 
         # drawing
         self.surface.fill(GRAY)
+        self.draw_target_column()
         self.sprites.draw(self.surface)
 
         self.draw_grid()

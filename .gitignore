@@ -6,3 +6,6 @@ venv
 __pycache__# pixi environments
 .pixi/*
 !.pixi/config.toml
+
+# modelo do MediaPipe, baixado na primeira execucao
+models/
